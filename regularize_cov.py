@@ -2,6 +2,10 @@ import numpy as np
 
 
 def regularize_cov(covariance, epsilon):
+    x, y = covariance.shape
+    id_matrix = np.identity(x) * epsilon
+
+    regularized_cov = covariance + id_matrix
     # regularize a covariance matrix, by enforcing a minimum
     # value on its singular values. Explanation see exercise sheet.
     #
@@ -11,6 +15,4 @@ def regularize_cov(covariance, epsilon):
     #
     # OUTPUT:
     # regularized_cov: reconstructed matrix
-
-    #####Insert your code here for subtask 6d#####
     return regularized_cov

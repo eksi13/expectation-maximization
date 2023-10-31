@@ -28,55 +28,57 @@ data[0] = np.loadtxt("data1")
 data[1] = np.loadtxt("data2")
 data[2] = np.loadtxt("data3")
 
-# test getLogLikelihood
-print("(a) testing getLogLikelihood function")
-weights = [0.341398243018411, 0.367330235091507, 0.291271521890082]
-means = [[3.006132088737974, 3.093100568285389],
-    [0.196675859954268, -0.034521603109466],
-    [-2.957520528756456, 2.991192198151507],
-]
-covariances = np.zeros((2, 2, 3))
-covariances[:, :, 0] = [
-    [0.949104844872119, -0.170637132238246],
-    [-0.170637132238246, 2.011158266600814],
-]
-covariances[:, :, 1] = [
-    [0.837094104536474, 0.044657749659523],
-    [0.044657749659523, 1.327399518241827],
-]
-covariances[:, :, 2] = [
-    [1.160661833073708, 0.058151801834449],
-    [0.058151801834449, 0.927437098385088],
-]
+# # test getLogLikelihood
+# print("(a) testing getLogLikelihood function")
+# weights = [0.341398243018411, 0.367330235091507, 0.291271521890082]
+# means = [[3.006132088737974, 3.093100568285389],
+#     [0.196675859954268, -0.034521603109466],
+#     [-2.957520528756456, 2.991192198151507],
+# ]
+# covariances = np.zeros((2, 2, 3))
+# covariances[:, :, 0] = [
+#     [0.949104844872119, -0.170637132238246],
+#     [-0.170637132238246, 2.011158266600814],
+# ]
+# covariances[:, :, 1] = [
+#     [0.837094104536474, 0.044657749659523],
+#     [0.044657749659523, 1.327399518241827],
+# ]
+# covariances[:, :, 2] = [
+#     [1.160661833073708, 0.058151801834449],
+#     [0.058151801834449, 0.927437098385088],
+# ]
+#
+# loglikelihoods = [-1.098653352229586e03, -1.706951862352565e03, -1.292882804841197e03]
+# for idx in range(3):
+#     ll = getLogLikelihood(means, weights, covariances, data[idx])
+#     diff = loglikelihoods[idx] - ll
+#     print(
+#         "LogLikelihood is {0}, should be {1}, difference: {2}\n".format(
+#             ll, loglikelihoods[idx], diff
+#         )
+#     )
 
-loglikelihoods = [-1.098653352229586e03, -1.706951862352565e03, -1.292882804841197e03]
-for idx in range(3):
-    ll = getLogLikelihood(means, weights, covariances, data[idx])
-    diff = loglikelihoods[idx] - ll
-    print(
-        "LogLikelihood is {0}, should be {1}, difference: {2}\n".format(
-            ll, loglikelihoods[idx], diff
-        )
-    )
 
-# test EStep
-print("\n")
-print("(b) testing EStep function")
-# load gamma values
+# # test EStep
+# print("\n")
+# print("(b) testing EStep function")
+# # load gamma values
 testgamma = [[], [], []]
 testgamma[0] = np.loadtxt("gamma1")
 testgamma[1] = np.loadtxt("gamma2")
 testgamma[2] = np.loadtxt("gamma3")
+#
+# for idx in range(3):
+#     _, gamma = EStep(means, covariances, weights, data[idx])
+#     absdiff = testgamma[idx] - gamma
+#     print("Sum of difference of gammas: {0}\n".format(np.sum(absdiff)))
 
-for idx in range(3):
-    _, gamma = EStep(means, covariances, weights, data[idx])
-    absdiff = testgamma[idx] - gamma
-    print("Sum of difference of gammas: {0}\n".format(np.sum(absdiff)))
-""" 
-# test MStep
-print("\n")
-print("(c) testing MStep function")
-# load gamma values
+#
+# # test MStep
+# print("\n")
+# print("(c) testing MStep function")
+# # load gamma values
 testparams = np.ndarray((3, 3), dtype=object)
 # means
 testparams[0, 0] = [
@@ -138,37 +140,38 @@ testparams[2, 2][:, :, 2] = [
     [0.559751011345552, 0.363911891484002],
     [0.363911891484002, 0.442160603656823],
 ]
-for idx in range(3):
-    weights, means, covariances, _ = MStep(testgamma[idx], data[idx])
-    absmeandiff = abs(means - testparams[0, idx])
-    absweightdiff = abs(weights - testparams[1, idx])
-    abscovdiff = abs(covariances - testparams[2, idx])
+# for idx in range(3):
+#     weights, means, covariances, _ = MStep(testgamma[idx], data[idx])
+#     absmeandiff = abs(means - testparams[0, idx])
+#     absweightdiff = abs(weights - testparams[1, idx])
+#     abscovdiff = abs(covariances - testparams[2, idx])
+#
+#     print("Sum of difference of covariances: {0}\n".format(np.sum(abscovdiff)))
+#     print("Sum of difference of means:       {0}\n".format(np.sum(absmeandiff)))
+#     print("Sum of difference of weights:     {0}\n".format(np.sum(absweightdiff)))
+#     print("\n")
 
-    print("Sum of difference of means:       {0}\n".format(np.sum(absmeandiff)))
-    print("Sum of difference of weights:     {0}\n".format(np.sum(absweightdiff)))
-    print("Sum of difference of covariances: {0}\n".format(np.sum(abscovdiff)))
 
-# test regularization
-print("\n")
-print("(c) testing regularization of covariances")
-regularized_cov = np.ndarray((2, 2, 3))
-regularized_cov[:, :, 0] = [
-    [0.938530520617187, -0.186093601749430],
-    [-0.186093601749430, 2.015901936462142],
-]
-regularized_cov[:, :, 1] = [
-    [0.848623744823879, 0.045317199218797],
-    [0.045317199218797, 1.362200524531750],
-]
-regularized_cov[:, :, 2] = [
-    [1.156594581079395, 0.064658231773354],
-    [0.064658231773354, 0.935324018684456],
-]
-for idx in range(3):
-    covariance = regularize_cov(testparams[2, 0][:, :, idx], 0.01)
-    absdiff = abs(covariance - regularized_cov[:, :, idx])
-    print("Sum of difference of covariances: {0}\n".format(np.sum(absdiff)))
-
+# # test regularization
+# print("\n")
+# print("(c) testing regularization of covariances")
+# regularized_cov = np.ndarray((2, 2, 3))
+# regularized_cov[:, :, 0] = [
+#     [0.938530520617187, -0.186093601749430],
+#     [-0.186093601749430, 2.015901936462142],
+# ]
+# regularized_cov[:, :, 1] = [
+#     [0.848623744823879, 0.045317199218797],
+#     [0.045317199218797, 1.362200524531750],
+# ]
+# regularized_cov[:, :, 2] = [
+#     [1.156594581079395, 0.064658231773354],
+#     [0.064658231773354, 0.935324018684456],
+# ]
+# for idx in range(3):
+#     covariance = regularize_cov(testparams[2, 0][:, :, idx], 0.01)
+#     absdiff = abs(covariance - regularized_cov[:, :, idx])
+#     print("Sum of difference of covariances: {0}\n".format(np.sum(absdiff)))
 
 # compute GMM on all 3 datasets
 print("\n")
@@ -186,30 +189,30 @@ for idx in range(3):
     plt.show()
 
 
-# uncomment following lines to generate the result
-# for different number of modes k plot the log likelihood for data3
-num = 14
-logLikelihood = np.zeros(num)
-for k in range(num):
-    # compute GMM
-    weights, means, covariances = estGaussMixEM(data[2], k + 1, n_iter, epsilon)
-    logLikelihood[k] = getLogLikelihood(means, weights, covariances, data[2])
 
-# plot result
-plt.subplot()
-plt.plot(range(num), logLikelihood)
-plt.title("Loglikelihood for different number of k on Data 3")
-plt.show()
-
-# skin detection
-print("\n")
-print("(g) performing skin detection with GMMs")
-sdata = np.loadtxt("skin.dat")
-ndata = np.loadtxt("non-skin.dat")
-
-img = im2double(imageio.imread("faces.png"))
-
-skin = skinDetection(ndata, sdata, skin_K, skin_n_iter, skin_epsilon, theta, img)
-plt.imshow(skin)
-plt.show()
- """
+# # uncomment following lines to generate the result
+# # for different number of modes k plot the log likelihood for data3
+# num = 14
+# logLikelihood = np.zeros(num)
+# for k in range(num):
+#     # compute GMM
+#     weights, means, covariances = estGaussMixEM(data[2], k + 1, n_iter, epsilon)
+#     logLikelihood[k] = getLogLikelihood(means, weights, covariances, data[2])
+#
+# # plot result
+# plt.subplot()
+# plt.plot(range(num), logLikelihood)
+# plt.title("Loglikelihood for different number of k on Data 3")
+# plt.show()
+#
+# # skin detection
+# print("\n")
+# print("(g) performing skin detection with GMMs")
+# sdata = np.loadtxt("skin.dat")
+# ndata = np.loadtxt("non-skin.dat")
+#
+# img = im2double(imageio.imread("faces.png"))
+#
+# skin = skinDetection(ndata, sdata, skin_K, skin_n_iter, skin_epsilon, theta, img)
+# plt.imshow(skin)
+# plt.show()

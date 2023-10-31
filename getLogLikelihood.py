@@ -1,11 +1,10 @@
 import numpy as np
-import scipy.stats
 
 
 def multi_gauss(x, means, covariances):
     d = len(means)
     norm = 1 / (((2 * np.pi) ** (d / 2)) * (np.linalg.det(covariances)) ** (1 / 2))
-    exponent = (-1 / 2) * (((x - means).T.dot(np.linalg.inv(covariances))).dot((x - means)))
+    exponent = (-1 / 2) * (((x - means).T.dot(np.linalg.inv(covariances + ))).dot((x - means)))
     return norm * np.exp(exponent)
 
 
