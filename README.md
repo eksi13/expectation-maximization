@@ -1,1 +1,1 @@
-Simple implementation of the EM-algorithm in python. Is able to detect face pixels.
+
